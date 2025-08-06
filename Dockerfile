@@ -13,6 +13,7 @@ COPY requirements.txt /app/
 # Create a virtual environment and install dependencies with uv
 RUN uv venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
+
 RUN uv pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: Final stage
@@ -20,6 +21,7 @@ FROM python:3.13-slim
 
 # Create a non-root user
 RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN apt-get update && apt-get install -y ffmpeg
 
 # Set the working directory and ownership preemptively
 WORKDIR /app
